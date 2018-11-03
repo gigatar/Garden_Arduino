@@ -9,8 +9,16 @@
 #define DHT_PIN 2
 #define DHTTYPE DHT11
 
+// Device signature
+#define SIGNATURE_0 0x1E
+#define SIGNATURE_1 0x97
+#define SIGNATURE_2 0x03
+
 
 DHT_Unified dht(DHT_PIN, DHTTYPE);
+
+
+const String  CONTROLLER_ID = String(SIGNATURE_0) + String(SIGNATURE_1) + String(SIGNATURE_2);
 
 const int START_WATER = 700;        // Which reading to start the water supply
 const int RUN_WATER_SECS = 2;       // How long to run the water
@@ -25,6 +33,8 @@ long water_time = DELAY_TIME_SECS;  // Ensure we have valid readings before we t
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  Serial.println(Controller_id);
+  delay(5000);
   pinMode(SOLENOID_PIN, OUTPUT);
 
   dht.begin();
@@ -79,6 +89,3 @@ void runWater() {
   digitalWrite(SOLENOID_PIN, LOW);
   water_time = WATER_INTERVAL;
 }
-
-
-
